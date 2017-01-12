@@ -24,6 +24,7 @@ import java.io.File;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 /**
@@ -118,8 +119,8 @@ public class StormHandler {
             files = new File[0];
         }
         for (final File file : files) {
-            final File[] hotsFolders = file.listFiles((dir, name) -> name.matches(hotsAccountFilter));
-            Arrays.stream(hotsFolders).forEach(hotsAccounts::add);
+            Optional.ofNullable(file.listFiles((dir, name) -> name.matches(hotsAccountFilter)))
+                    .ifPresent(hotsFolders -> Arrays.stream(hotsFolders).forEach(hotsAccounts::add));
         }
 
          return hotsAccounts.stream()
